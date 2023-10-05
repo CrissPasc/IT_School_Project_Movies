@@ -13,17 +13,17 @@
       <div class="container-nav-bar">
         <div class="sub-container">
           <div>
-            <img class="logo" src="/Logo Nav.png" alt="Logo" />
+            <img class="logo" src="/pictures/cinema-logo.png" alt="Logo" />
           </div>
           <div class="title">CineStar</div>
         </div>
         <div class="select-nav-bar">
           <ul class="nav-bar-list">
-            <li><a href="/Home/Home.html"> Home </a></li>
-            <li><a href="/Movies/movies.html">Movies </a></li>
+            <li><a href="/Home/Home.html">Home</a></li>
+            <li><a href="/Movies/movies.html">Movies</a></li>
 
-            <li><a href="/admin/add/add.html">Add </a></li>
-            <li><a href="/admin/edit/edit.html">Edit </a></li>
+            <li><a href="/admin/add/add.html">Add</a></li>
+            <li><a href="/admin/edit/edit.html">Edit-Delete</a></li>
           </ul>
         </div>
       </div>
@@ -31,15 +31,15 @@
     <div class="filter-bar">
       <div class="filter-dropdowns">
         <select name="movies-filter" class="movies" id="movieTitle">
-          <option value="all-categories">Select by movie title</option>
+          <option value="all-categories">Select by movie title/Year</option>
         </select>
-        <select name="year" class="year" id="movieYear">
+        <!-- <select name="year" class="year" id="movieYear">
           <option value="all-years">Select by year</option>
-        </select>
+        </select> -->
         <div id="searchForm">
           <input
             type="text"
-            placeholder="search"
+            placeholder="Search by movie title/Year"
             id="searchInput"
             class="search"
           />
@@ -91,16 +91,22 @@
 
         <div class="form-group">
           <label for="duration">Duration (minutes):</label>
-          <input type="number" id="duration" name="duration" />
+          <input
+            type="number"
+            id="duration"
+            name="duration"
+            min="15"
+            max="240"
+          />
         </div>
 
         <div class="form-group">
           <label for="year">Year:</label>
-          <input type="number" id="year" name="year" />
+          <input type="number" id="year" name="year" min="1900" max="2023" />
         </div>
 
         <button id="editButton" type="submit">Submit Edit</button>
-        <!-- onclick="addItem()" onclick="editMovie(data)"  -->
+        <button id="deleteButton" type="submit">Submit Delete</button>
       </form>
     </div>
 

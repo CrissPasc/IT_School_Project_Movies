@@ -9,7 +9,8 @@ const getCategory = document.getElementById("category");
 const getRating = document.getElementById("rating");
 const getDuration = document.getElementById("duration");
 const getYear = document.getElementById("year");
-const getbttn = document.getElementById("editButton");
+const getEditButton = document.getElementById("editButton");
+const getDeleteButton = document.getElementById("deleteButton");
 
 let introducedTitle = "no title yet";
 let introducedDirector = "no director yet";
@@ -63,10 +64,10 @@ getYear.addEventListener("input", async (ev) => {
   introducedYear = textToAdd;
 });
 
-// ADUC DINAMIC FILMELE IN DROPDOWN FILTRU
+// ADUC DINAMIC FILMELE IN DROPDOWN FILTRU DUPA TITLU
 const getMovieTitle = document.getElementById("movieTitle");
 
-getMovieTitle.addEventListener("click", main());
+getMovieTitle.addEventListener("click", mainTitle());
 
 // const selectedMovie = getMovieTitle.addEventListener("change", async (e) => {
 //   console.log(e.target.value);
@@ -87,15 +88,15 @@ let displayTitle = getTitle.value;
 
 console.log(displayTitle);
 
-let selectedId = 1;
+let selectedId = 0;
 
-async function main() {
+async function mainTitle() {
   const data = await fetchData();
 
   let fitruMovieTitle = "";
   data?.forEach((element) => {
     getMovieTitle.innerHTML += `
-    <option value="${element.id}" >${element.title}</option>`;
+    <option value="${element.id}" >${element.title}/${element.year}</option>`;
     // console.log(element.title, element.id);
 
     getMovieTitle.addEventListener("change", async (e) => {
@@ -149,15 +150,19 @@ async function main() {
 
 // console.log(selectedMovie); // IESE UNDEFIEND
 
-getbttn.addEventListener("submit", editMovie(selectedId));
+// getbttn.addEventListener("submit", editMovie(selectedId));
 
-async function editMovie(id) {
+getEditButton.addEventListener("click", (e) => editMovie(e, selectedId));
+
+async function editMovie(e, id) {
   // const data = await fetchData();
   // console.log("data", data[0], data[12]);
   // event.preventDefault();
   // console.log(selectedId);
 
-  // dataToUpdate = {  title: introducedTitle, ...}
+  // dataToUpdate = {  title: introducedTitle, ...
+
+  e.preventDefault(); // opreste sa ia by default selectedId = 0;
 
   try {
     const response = await fetch(`http://localhost:3002/movies/${id}`, {
@@ -192,6 +197,25 @@ async function editMovie(id) {
   } catch (error) {
     console.error("Error updating data:", error);
     throw error;
+  }
+}
+
+getDeleteButton.addEventListener("click", (e) => deleteMovie(e, selectedId));
+
+async function deleteMovie(e, id) {
+  e.preventDefault(); // opreste sa ia by default selectedId = 0;
+  try {
+    const response = await fetch(`http://localhost:3002/movies/${id}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      throw new Error("Failed to delete data.");
+    }
+  } catch (error) {
+    console.error("Error deleting data:", error);
   }
 }
 
@@ -237,3 +261,67 @@ async function fetchData() {
 
 // let data = Object.fromEntries(formData);
 // console.log(data);
+
+// POATE FI SELECTAT MOVIE BY YEAR DAR NU E FTE  OK DE UTILIZAT -- NU STII CE MOVIE SELECTEZI --
+
+// const getMovieYear = document.getElementById("movieYear");
+
+// getMovieYear.addEventListener("click", mainYear());
+
+// async function mainYear() {
+//   const data = await fetchData();
+
+//   let fitruMovieTitle = "";
+//   data?.forEach((element) => {
+//     getMovieYear.innerHTML += `
+//     <option value="${element.id}" >${element.year}</option>`;
+//     // console.log(element.title, element.id);
+
+//     getMovieYear.addEventListener("change", async (e) => {
+//       const clickedYear = e.target.value; // .toLowerCase()
+//       selectedId = clickedYear;
+//       // const movies = await fetchData();
+//       // console.log(selectedId);
+
+//       if (element.id == selectedId) {
+//         console.log(
+//           "YES!!!",
+//           "selectedId = ",
+//           selectedId,
+//           element.id,
+//           element.title
+//         );
+//         getTitle.value = element.title;
+//         getDirector.value = element.director;
+//         getImage.value = element.image;
+//         getVideo.value = element.video;
+//         getCategory.value = element.category;
+//         getRating.value = element.rating;
+//         getDuration.value = element.duration;
+//         getYear.value = element.year;
+
+//         introducedTitle = element.title;
+//         introducedDirector = element.director;
+//         introducedImage = element.image;
+//         introducedVideo = element.video;
+//         introducedCategory = element.category;
+//         introducedRating = element.rating;
+//         introducedDuration = element.duration;
+//         introducedYear = element.year;
+//         console.log(
+//           introducedTitle,
+//           "with selectedId FINAL!!!!!= ",
+//           selectedId
+//         );
+//       } else {
+//         console.log(
+//           "..",
+//           "selectedId = ",
+//           selectedId,
+//           element.id,
+//           element.title
+//         );
+//       }
+//     });
+//   });
+// }
